@@ -3,6 +3,7 @@ import Link from 'next/link'
 import React from 'react'
 import { navLinks } from '../utils/constants'
 import { usePathname } from 'next/navigation'
+import { Button } from '@/components/ui/button'
 
 export default function LeftSideBar() {
 
@@ -25,12 +26,11 @@ export default function LeftSideBar() {
           </li>
         ))}
       </ul>
-      <Link
-        href='/login'
-        className=' border border-tertiary text-tertiary font-bold text-lg p-2 px-4 rounded-lg hover:bg-tertiary hover:text-primary'
-      >
-        Sign In
-      </Link>
+      <Button className='h-20 bg-background' asChild>
+        <Link href='/login' className='w-full bg-background text-tertiary font-bold'>
+          Sign Up
+        </Link>
+      </Button>
     </section>
   )
 }
