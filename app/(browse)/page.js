@@ -2,6 +2,7 @@
 
 import { useTheme } from "next-themes"
 import RightSideBar from "./components/RightSideBar"
+import { SidebarTrigger } from "@/components/ui/sidebar"
 
 export default function Home() {
   const { theme, setTheme } = useTheme()
@@ -13,6 +14,7 @@ export default function Home() {
   return (
     <div className="flex overflow-x-hidden overflow-y-auto">
       <div className="grow bg-background text-foreground h-screen">
+        <SidebarTrigger />
         Hello world
         <button className="border-2 font-bold rounded-lg p-2 border-tertiary text-tertiary hover:bg-tertiary hover:text-primary" onClick={toggleMode}>
           Theme

@@ -1,15 +1,21 @@
+
+import { Home, Contact, Settings } from "lucide-react"
+
 export const navLinks = [
     {
-        name: 'Home',
-        link: '/'
+        title: 'Home',
+        url: '/',
+        icon: Home
     },
     {
-        name: 'About',
-        link: '/about'
+        title: 'Settings',
+        url: '/settings',
+        icon: Settings
     },
     {
-        name: 'Contact',
-        link: '/contact'
+        title: 'Contact',
+        url: '/contact',
+        icon: Contact
     }
 ]
 

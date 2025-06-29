@@ -1,4 +1,6 @@
+import React from "react";
 import LeftSideBar from "./components/LeftSideBar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 
 
 export const metadata = {
@@ -8,13 +10,15 @@ export const metadata = {
 
 export default function BrowseLayout({ children }) {
   return (
-        <div
-          className="w-screen h-screen overflow-hidden flex"
-        >
-          <LeftSideBar />
-          <section className="grow">
-            {children}
-          </section>
-        </div>
+    <div
+      className="w-screen h-screen overflow-hidden flex"
+    >
+      <SidebarProvider>
+        <LeftSideBar />
+        <section className="grow">
+          {children}
+        </section>
+      </SidebarProvider>
+    </div>
   );
 }

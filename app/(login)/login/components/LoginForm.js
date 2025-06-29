@@ -4,6 +4,7 @@ import React from 'react'
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 import { Button } from "@/components/ui/button"
 import {
@@ -24,6 +25,9 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import GoggleBtn from './GoggleBtn';
+import { auth } from '@/utils/firebase';
+import { useDispatch } from 'react-redux';
+import { setUser } from '@/reduxStore/userSlice';
 
 
 
@@ -39,6 +43,9 @@ const formSchema = z.object({
 
 
 export default function LoginForm({ toggleForm }) {
+
+    const dispatch = useDispatch();
+
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -46,12 +53,23 @@ export default function LoginForm({ toggleForm }) {
             password: "",
         },
     });
-    console.log(form);
 
     // 2. Define a submit handler.
-    function handleSignUp(values) {
+    function handleSignIn(values) {
         // Do something with the form values.
         console.log(values);
+        signInWithEmailAndPassword(auth, values.email, values.password)
+            .then((userCredential) => {
+                // Signed in 
+                const { uid, email, displayName } = userCredential.user;
+                dispatch(setUser({ uid, email, displayName }));
+                // ...
+                console.log("User signed in:", user);
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+            });
     }
 
     return (
@@ -65,7 +83,7 @@ export default function LoginForm({ toggleForm }) {
                 </CardHeader>
                 <CardContent>
                     <Form {...form}>
-                        <form onSubmit={form.handleSubmit(handleSignUp)} className="space-y-3">
+                        <form onSubmit={form.handleSubmit(handleSignIn)} className="space-y-3">
 
                             <FormField
                                 control={form.control}
@@ -107,7 +125,7 @@ export default function LoginForm({ toggleForm }) {
                         </div>
                         <div className="relative flex justify-center text-xs uppercase">
                             <span className="bg-card text-muted-foreground px-2">
-                                Or continue with
+                                Or
                             </span>
                         </div>
                     </div>

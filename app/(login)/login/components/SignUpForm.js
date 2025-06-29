@@ -2,8 +2,10 @@
 
 import React from 'react'
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { z } from "zod";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+
 
 import { Button } from "@/components/ui/button"
 import {
@@ -24,6 +26,8 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import GoggleBtn from './GoggleBtn';
+import { auth } from '@/utils/firebase';
+import { useDispatch } from 'react-redux';
 
 
 
@@ -51,8 +55,10 @@ const formSchema = z.object({
 });
 
 
+export default function SignUpForm({ toggleForm }) {
 
-export default function SignUpForm({toggleForm}) {
+    const dispatch = useDispatch();
+
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -62,12 +68,28 @@ export default function SignUpForm({toggleForm}) {
             confirmPassword: "",
         },
     });
-    console.log(form);
 
     // 2. Define a submit handler.
     function handleSignUp(values) {
         // Do something with the form values.
         console.log(values);
+        createUserWithEmailAndPassword(auth, values.email, values.password)
+            .then(async (userCredential) => {
+                const user = userCredential.user;
+                await updateProfile(user, { displayName: values.username })
+
+                const { uid, displayName, email } = auth.currentUser;
+                console.log("User created:", displayName, email, uid);
+                dispatch(setUser({ uid, email, displayName }));
+                console.log("Profile updated successfully!");
+                // Signed in
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.log(errorCode + errorMessage)
+                // ..
+            });
     }
 
 
@@ -138,8 +160,8 @@ export default function SignUpForm({toggleForm}) {
                                 )}
                             />
                             <div>
-                                Already have an account? 
-                                <button onClick={toggleForm} className="text-accent hover:underline">Sign in</button>
+                                Already have an account?
+                                <span onClick={toggleForm} className="text-accent hover:underline">Sign in</span>
                             </div>
                             <Button className='w-full' type="submit">Sign Up</Button>
                         </form>
@@ -150,7 +172,7 @@ export default function SignUpForm({toggleForm}) {
                         </div>
                         <div className="relative flex justify-center text-xs uppercase">
                             <span className="bg-card text-muted-foreground px-2">
-                                Or continue with
+                                Or
                             </span>
                         </div>
                     </div>
