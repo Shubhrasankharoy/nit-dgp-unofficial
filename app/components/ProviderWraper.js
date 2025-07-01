@@ -3,7 +3,6 @@ import React from 'react'
 import StoreProvider from './StoreProvider'
 import { ThemeProvider } from './themeProvider'
 import AuthProvider from './AuthProvider'
-import { SidebarProvider } from '@/components/ui/sidebar'
 
 export default function ProviderWraper({ children }) {
     return (

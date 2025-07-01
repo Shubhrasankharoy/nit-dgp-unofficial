@@ -1,6 +1,8 @@
 import React from "react";
 import LeftSideBar from "./components/LeftSideBar";
-import { SidebarProvider } from "@/components/ui/sidebar";
+import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
+import { Separator } from "@/components/ui/separator";
+import SiteHeader from "./components/SiteHeader";
 
 
 export const metadata = {
@@ -9,15 +11,25 @@ export const metadata = {
 };
 
 export default function BrowseLayout({ children }) {
+
+  
   return (
     <div
       className="w-screen h-screen overflow-hidden flex"
     >
       <SidebarProvider>
         <LeftSideBar />
-        <section className="grow">
-          {children}
-        </section>
+
+        <SidebarInset>
+          <SiteHeader/>
+          <Separator
+            orientation="horizontal"
+            className="w-full"
+          />
+          <section className="w-full h-full overflow-y-auto p-4 pt-0">
+            {children}
+          </section>
+        </SidebarInset>
       </SidebarProvider>
     </div>
   );

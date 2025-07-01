@@ -9,6 +9,7 @@ import {
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
+  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -19,6 +20,7 @@ import { signOut } from 'firebase/auth'
 import { auth } from '@/utils/firebase'
 import { useDispatch, useSelector } from 'react-redux'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 
 
 const avatar = "https://avatars.githubusercontent.com/u/12345678?v=4";
@@ -45,6 +47,25 @@ export default function LeftSideBar() {
 
   return (
     <Sidebar>
+      <SidebarHeader>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <Link
+              href='/'
+              className="p-2 h-14 flex items-center gap-2"
+            >
+              <Image
+                src='/logoRmBg.png'
+                alt='logo'
+                className=''
+                width={45}
+                height={45}
+              />
+              <span className='font-bold text-xl'>NITDGP HUB</span>
+            </Link>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Application</SidebarGroupLabel>
